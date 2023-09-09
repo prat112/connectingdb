@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conact US</title>
+    <link rel="stylesheet" href="/css/contact.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a href="/admin/add-product">add product</a></li>
+                <li class="main-header__item"><a href="/">product</a></li>
+                <li class="main-header__item"><a class="active" href="/contactus">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main >
+        <form action="/success" method="POST">
+            <label for="name">Name: </label>
+            <input type="text" id="name" name="name"><br>
+            <label for="email">Email: </label>
+            <input type="email" id="email" name="email" ><br>
+            <button type="submit">submit</button>
+        </form>
+    </main>
+</body>
+</html>
