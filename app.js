@@ -14,19 +14,54 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
+const Product = require('./models/product');
+const User = require('./models/user');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req,res,next)=>{
+    User.findByPk(1)
+    .then(user =>{
+        //adding a new object to the request field
+        //and not overidding it
+        //user in the right is an sequelize object with all sequelize functionalities
+        req.user = user;
+        next();
+        //this req.user will be user by Product.create
+        //for linking userID in Product table
+    })
+    .catch(err=> console.log(err))
+})
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
+//Association
+//A user has created a product but  has not purchased it yet
+//second argument defines how the relationship will be managed
+//CASCADE- means if the user is deleted, all the products created by it will be deleted too. 
+Product.belongsTo(User,{contraints:true , onDelete: 'CASCADE'});
+User.hasMany(Product);//optional
 
 //sync method syncs the models to the database
 // by creating an appropiate table
 sequelize.sync()
+//{force : true} inside sync :drops the existing tables
 .then(result =>{
+    return User.findByPk(1)
     //console.log(result);
+   
+})
+.then( user =>{
+    if(!user){
+        User.create({name:'pallavi', 
+        email:'pallu@gmail.com'
+    })
+    }
+    return user;
+})
+.then(user =>{
+    console.log(user);
     app.listen(3000);
 })
 .catch(err=> console.log(err));
